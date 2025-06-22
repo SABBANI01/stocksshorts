@@ -1,0 +1,43 @@
+{
+  "name": "StocksShorts - Indian Stock Market News",
+  "short_name": "StocksShorts",
+  "description": "Real-time Indian stock market news with sentiment analysis",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["finance", "news", "business"],
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Trending News",
+      "short_name": "Trending",
+      "description": "View trending stock market news",
+      "url": "/?category=trending",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Nifty Updates",
+      "short_name": "Nifty",
+      "description": "Latest Nifty index updates",
+      "url": "/?category=nifty",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

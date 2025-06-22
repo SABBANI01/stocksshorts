@@ -1,0 +1,30 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="512" cy="512" r="480" fill="url(#gradient)"/>
+  
+  <!-- Chart Lines -->
+  <path d="M150 650 L250 580 L350 520 L450 460 L550 380 L650 320 L750 280 L850 220" 
+        stroke="white" stroke-width="12" fill="none" stroke-linecap="round"/>
+  
+  <!-- Data Points -->
+  <circle cx="250" cy="580" r="16" fill="white"/>
+  <circle cx="350" cy="520" r="16" fill="white"/>
+  <circle cx="450" cy="460" r="16" fill="white"/>
+  <circle cx="550" cy="380" r="16" fill="white"/>
+  <circle cx="650" cy="320" r="16" fill="white"/>
+  <circle cx="750" cy="280" r="16" fill="white"/>
+  <circle cx="850" cy="220" r="20" fill="#fbbf24"/>
+  
+  <!-- Stock Symbol -->
+  <text x="512" y="800" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="120" font-weight="bold">₹</text>
+  
+  <!-- App Initial -->
+  <text x="512" y="480" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="180" font-weight="bold">S</text>
+</svg>

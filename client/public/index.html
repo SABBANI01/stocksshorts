@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StocksShorts - Indian Stock Market News</title>
+  <meta name="description" content="Get real-time Indian stock market news with StocksShorts. Swipe through trending Nifty, Sensex, and stock updates with sentiment analysis.">
+  
+  <!-- PWA Configuration -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="StocksShorts">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <!-- Preload critical resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://images.pexels.com">
+  
+  <!-- Critical CSS for initial render -->
+  <style>
+    /* Critical loading styles */
+    #root {
+      min-height: 100vh;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .loading-fallback {
+      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      #root {
+        background-color: #0a0a0a;
+        color: #ffffff;
+      }
+      .loading-spinner {
+        border-color: #374151;
+        border-top-color: #60a5fa;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="loading-fallback">
+      <div class="loading-spinner"></div>
+      <h2>StocksShorts</h2>
+      <p>Loading Indian stock market news...</p>
+    </div>
+  </div>
+  
+  <script>
+    // Detect white screen and show fallback
+    function checkForWhiteScreen() {
+      const root = document.getElementById('root');
+      if (root) {
+        const hasContent = root.children.length > 0 && 
+                          (root.querySelector('#app-root') || 
+                           root.textContent.trim().length > 0);
+        
+        if (!hasContent || root.innerHTML.includes('loading-fallback')) {
+          // Still loading or white screen detected
+          setTimeout(function() {
+            if (!root.querySelector('#app-root')) {
+              root.innerHTML = `
+                <div class="loading-fallback">
+                  <h2>StocksShorts</h2>
+                  <p>Loading takes longer than expected</p>
+                  <button onclick="window.location.reload()" style="margin-top: 16px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                    Refresh Page
+                  </button>
+                </div>
+              `;
+            }
+          }, 5000);
+        }
+      }
+    }
+    
+    // Check for white screen periodically
+    setTimeout(checkForWhiteScreen, 2000);
+    setTimeout(checkForWhiteScreen, 5000);
+    setTimeout(checkForWhiteScreen, 10000);
+    
+    // Global error handler
+    window.addEventListener('error', function(e) {
+      console.error('Global error:', e.error);
+      const root = document.getElementById('root');
+      if (root && !root.querySelector('#app-root')) {
+        root.innerHTML = `
+          <div class="loading-fallback">
+            <h2>StocksShorts</h2>
+            <p>Something went wrong. Please refresh the page.</p>
+            <button onclick="window.location.reload()" style="margin-top: 16px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">
+              Refresh Page
+            </button>
+          </div>
+        `;
+      }
+    });
+
+    // Handle unhandled promise rejections
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Unhandled promise rejection:', e.reason);
+      const root = document.getElementById('root');
+      if (root && !root.querySelector('#app-root')) {
+        root.innerHTML = `
+          <div class="loading-fallback">
+            <h2>StocksShorts</h2>
+            <p>Network error. Please check your connection and refresh.</p>
+            <button onclick="window.location.reload()" style="margin-top: 16px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">
+              Refresh Page
+            </button>
+          </div>
+        `;
+      }
+    });
+
+    // Register service worker for PWA functionality
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('ServiceWorker registration successful');
+            
+            // Check for updates
+            registration.addEventListener('updatefound', function() {
+              const newWorker = registration.installing;
+              newWorker.addEventListener('statechange', function() {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // New version available
+                  if (confirm('New version available. Refresh to update?')) {
+                    window.location.reload();
+                  }
+                }
+              });
+            });
+          })
+          .catch(function(error) {
+            console.log('ServiceWorker registration failed:', error);
+          });
+      });
+    }
+
+    // Enable background sync when online
+    window.addEventListener('online', function() {
+      if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+        navigator.serviceWorker.ready.then(function(registration) {
+          return registration.sync.register('background-sync');
+        }).catch(function(error) {
+          console.log('Background sync registration failed:', error);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
